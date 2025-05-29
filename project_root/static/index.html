@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Consultas a la Base de Datos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      padding: 30px;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    label, input, button {
+      display: block;
+      width: 100%;
+      margin-bottom: 15px;
+    }
+    input[type="text"] {
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      padding: 10px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    .error {
+      color: red;
+      margin-top: 10px;
+    }
+    .loading {
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Consultas a la Base de Datos</h1>
+    <form id="consulta-form">
+      <label for="query">Escribe tu consulta:</label>
+      <input type="text" id="query" name="query" placeholder="Ej. Muéstrame todos los empleados" required />
+      <button type="submit">Consultar</button>
+    </form>
+    <div id="resultado"></div>
+  </div>
+
+  <script>
+    document.getElementById("consulta-form").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const query = document.getElementById("query").value;
+      const resultadoDiv = document.getElementById("resultado");
+      resultadoDiv.innerHTML = '<p class="loading">Consultando...</p>';
+
+      try {
+        const res = await fetch("http://127.0.0.1:8000/consulta", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query })
+        });
+
+        const data = await res.json();
+
+        if (data.error) {
+          resultadoDiv.innerHTML = `<p class="error">❌ ${data.error}</p>`;
+          return;
+        }
+
+        if (Array.isArray(data) && data.length > 0) {
+          const headers = Object.keys(data[0]);
+          let html = "<table><thead><tr>";
+          headers.forEach(h => {
+            html += `<th>${h}</th>`;
+          });
+          html += "</tr></thead><tbody>";
+          data.forEach(row => {
+            html += "<tr>";
+            headers.forEach(h => {
+              html += `<td>${row[h]}</td>`;
+            });
+            html += "</tr>";
+          });
+          html += "</tbody></table>";
+          resultadoDiv.innerHTML = html;
+        } else if (Array.isArray(data) && data.length === 0) {
+          resultadoDiv.innerHTML = "<p>No se encontraron resultados.</p>";
+        } else {
+          resultadoDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+        }
+      } catch (error) {
+        resultadoDiv.innerHTML = `<p class="error">Error de conexión con la API.</p>`;
+      }
+    });
+  </script>
+</body>
+</html>
