@@ -1,0 +1,10 @@
+mkdir myprojectvenv
+sudo apt install python3.12-venv
+python3 -m venv myprojectvenv/
+sudo apt update
+sudo apt upgrade
+sudo apt install build-essential python3-dev
+sudo apt install postgresql libpq-dev
+pip install -r requirements.txt -v
+source myprojectvenv/bin/activate
+uvicorn app.main:app --reload
