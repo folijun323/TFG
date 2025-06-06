@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Ejecutar comandos dentro de psql como usuario postgres
+
 sudo -i -u postgres psql <<EOF
 DO
 \$do\$
