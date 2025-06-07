@@ -28,6 +28,7 @@ server {
         proxy_set_header Host $host;
         proxy_cache_bypass $http_upgrade;
     }
+}
 
 sudo ln -s /etc/nginx/sites-available/miapp /etc/nginx/sites-enabled/
 sudo nginx -t
