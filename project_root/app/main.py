@@ -75,7 +75,7 @@ async def consulta(request: Request):
         columnas = res.keys()
         result = res.fetchall()
 
-        # Formatear como texto plano
+        
         consulta_str = f"Consulta:\n{sql.strip()}\n\n"
         header = "\t".join(columnas) + "\n"
         rows = ""
