@@ -41,5 +41,7 @@ sudo nginx -t
 sudo systemctl restart nginx
 sudo ufw delete allow 'Nginx HTTP'
 cd porject_root
+sudo apt install certbot python3-certbot-nginx
+sudo certbot --nginx -d folijun323.tech
 screen -S myapp
 uvicorn app.main:app --host 127.0.0.1 --port 8000
