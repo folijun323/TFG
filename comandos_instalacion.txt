@@ -39,5 +39,6 @@ sudo usermod -aG www-data ubuntu
 sudo nginx -t
 sudo systemctl restart nginx
 sudo ufw delete allow 'Nginx HTTP'
+cd porject_root
 screen -S myapp
 uvicorn app.main:app --host 127.0.0.1 --port 8000
