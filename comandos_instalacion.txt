@@ -8,3 +8,14 @@ sudo apt install postgresql libpq-dev
 pip install -r requirements.txt -v
 source myprojectvenv/bin/activate
 uvicorn app.main:app --reload
+
+sudo apt install ngnix
+screen -S myapp
+uvicorn app.main:app --host 127.0.0.1 --port 8000
+sudo ufw delete allow 5000
+sudo ufw allow 'Nginx Full'
+sudo usermod -aG ubuntu www-data
+sudo usermod -aG www-data ubuntu
+sudo nginx -t
+sudo systemctl restart nginx
+sudo ufw delete allow 'Nginx HTTP
