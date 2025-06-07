@@ -16,7 +16,20 @@ uvicorn app.main:app --reload
 
 sudo apt install ngnix
 sudo nano /etc/nginx/sites-available/miapp
-sudo ln -s /etc/nginx/sites-available/myapp /etc/nginx/sites-enabled/
+
+server {
+    server_name el_nombre_dominio;
+
+    location / {
+        proxy_pass http://127.0.0.1:8000;  # Puerto donde corre uvicorn
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+sudo ln -s /etc/nginx/sites-available/miapp /etc/nginx/sites-enabled/
 sudo nginx -t
 sudo systemctl reload nginx
 sudo ufw delete allow 5000
