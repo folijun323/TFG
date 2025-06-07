@@ -1,6 +1,6 @@
 import psycopg2
 
-# Configuración de la conexión
+
 conn = psycopg2.connect(
     dbname="empresa",
     user="curro",
@@ -10,7 +10,7 @@ conn = psycopg2.connect(
 )
 cur = conn.cursor()
 
-# Crear tablas
+
 crear_tablas = """
 -- Tabla de departamentos
 CREATE TABLE IF NOT EXISTS departamentos (
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS asignaciones_proyectos (
 """
 cur.execute(crear_tablas)
 
-# Insertar datos
+
 inserts = """
 -- Insertar departamentos
 INSERT INTO departamentos (nombre) VALUES 
@@ -120,7 +120,7 @@ INSERT INTO asignaciones_proyectos (empleado_id, proyecto_id) VALUES
 """
 cur.execute(inserts)
 
-# Confirmar cambios y cerrar conexión
+
 conn.commit()
 cur.close()
 conn.close()
