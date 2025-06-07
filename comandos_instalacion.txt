@@ -5,17 +5,26 @@ sudo apt update
 sudo apt upgrade
 sudo apt install build-essential python3-dev
 sudo apt install postgresql libpq-dev
-pip install -r requirements.txt -v
+chmod +x crear_usuario_postgres.sh
+./crear_usuario_postgres.sh
+python3 create_database.py
+python3 crear_tablas.py
 source myprojectvenv/bin/activate
+pip install -r requirements.txt -v
+
 uvicorn app.main:app --reload
 
 sudo apt install ngnix
-screen -S myapp
-uvicorn app.main:app --host 127.0.0.1 --port 8000
+sudo nano /etc/nginx/sites-available/miapp
+sudo ln -s /etc/nginx/sites-available/myapp /etc/nginx/sites-enabled/
+sudo nginx -t
+sudo systemctl reload nginx
 sudo ufw delete allow 5000
 sudo ufw allow 'Nginx Full'
 sudo usermod -aG ubuntu www-data
 sudo usermod -aG www-data ubuntu
 sudo nginx -t
 sudo systemctl restart nginx
-sudo ufw delete allow 'Nginx HTTP
+sudo ufw delete allow 'Nginx HTTP'
+screen -S myapp
+uvicorn app.main:app --host 127.0.0.1 --port 8000
