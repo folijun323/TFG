@@ -11,13 +11,13 @@ python3 create_database.py
 python3 crear_tablas.py
 source myprojectvenv/bin/activate
 pip install -r requirements.txt -v
-
 uvicorn app.main:app --reload
 
 sudo apt install ngnix
 sudo nano /etc/nginx/sites-available/miapp
 
 server {
+    listen 80;
     server_name el_nombre_dominio;
 
     location / {
